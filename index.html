@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tesnim GPT</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <center><h1>Tesnim GPT</h1></center>
+    <div class="chat-container">
+        <div id="chatbox" class="chatbox">
+            <div class="message bot-message">Hello! Ask me anything.</div>
+        </div>
+        <div class="input-container">
+            <form id="user-form">
+                <input type="text" id="user-input" placeholder="Type your message here..." name="message">
+                <button type="submit">Send</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        const responses = ["barazammer", "al wabe", "7el 3ani", "nafssi 3am tel3i", "n7eb croissant"];
+
+        function getRandomResponse() {
+            return responses[Math.floor(Math.random() * responses.length)];
+        }
+
+        document.getElementById('user-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const userInput = document.getElementById('user-input').value.trim();
+            if (userInput === "") return;
+
+            const chatbox = document.getElementById('chatbox');
+
+            // Display user message
+            const userMessage = document.createElement('div');
+            userMessage.className = 'message user-message';
+            userMessage.textContent = userInput;
+            chatbox.appendChild(userMessage);
+
+            // Send user input to Formspree
+            fetch('https://formspree.io/f/xnqeeqdy', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: userInput })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
+            // Display bot response
+            const botResponse = document.createElement('div');
+            botResponse.className = 'message bot-message';
+            botResponse.textContent = getRandomResponse();
+            chatbox.appendChild(botResponse);
+
+            // Clear input field
+            document.getElementById('user-input').value = '';
+
+            // Scroll to the bottom
+            chatbox.scrollTop = chatbox.scrollHeight;
+        });
+    </script>
+</body>
+</html>
