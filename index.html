@@ -84,7 +84,11 @@ document.getElementById('user-form').addEventListener('submit', function(event) 
         botResponse.className = 'message bot-message';
         botResponse.innerHTML = `For ${artist}, I recommend searching for "${songName}" on <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(songName)}" target="_blank">YouTube</a>.`;
         chatbox.appendChild(botResponse);
-    } else {
+    }else if (userInput === "chedi") {
+        const botResponse = document.createElement('div');
+        botResponse.className = 'message bot-message';
+        botResponse.textContent = "Cuuuuuuuute 3al e5er";
+        chatbox.appendChild(botResponse);} else {
         // Send user input to Formspree
         fetch('https://formspree.io/f/xnqeeqdy', {
             method: 'POST',
