@@ -62,6 +62,11 @@ function createButterfly() {
 
     const updateInterval = Math.floor(Math.random() * 2000) + 500; // Random update interval between 0.5 and 2 seconds
 
+    // Set a timeout to remove the butterfly after 10 seconds
+    setTimeout(() => {
+        document.body.removeChild(butterfly);
+    }, 10000);
+
     setInterval(() => {
         x = Math.max(0, Math.min(maxX, x + Math.floor(Math.random() * 21) - 10)); // Random change in x-coordinate
         y = Math.max(0, Math.min(maxY, y + Math.floor(Math.random() * 21) - 10)); // Random change in y-coordinate
@@ -70,6 +75,7 @@ function createButterfly() {
         butterfly.style.top = y + 'px';
     }, updateInterval);
 }
+
 
 const responses = ["barazammer", "al wabe", "7el 3ani", "nafssi 3am tel3i","eb3din","e7term naffsk","n7eb nemchi lfilanda","manifestation", "n7eb croissant"];
 const songRecommendations = {
