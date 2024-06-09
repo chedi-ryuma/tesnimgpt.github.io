@@ -20,60 +20,91 @@
         </div>
     </div>
     <script>
-        const responses = ["barazammer", "al wabe", "7el 3ani", "nafssi 3am tel3i", "n7eb croissant"];
+const responses = ["barazammer", "al wabe", "7el 3ani", "nafssi 3am tel3i", "n7eb croissant"];
 
-        function getRandomResponse() {
-            return responses[Math.floor(Math.random() * responses.length)];
-        }
+const songRecommendations = {
+    "Nancy Ajram": ["Ah W Noss", "Ma Tegi Hena", "Yay", "Badna Nwalee El Jaw"],
+    "Ruby": ["Leih Beydary Kedah", "Meshit Wara Ehsasy", "Ana Donyeto", "Ana Omry Ma3ak"],
+    "Sherine": ["Masha'er", "Kolly Melkak", "Bayen Menek", "Hobbo Ganna"],
+    // Add more artists and their songs as needed
+};
 
-        document.getElementById('user-form').addEventListener('submit', function(event) {
-            event.preventDefault();
+function getRandomResponse() {
+    return responses[Math.floor(Math.random() * responses.length)];
+}
 
-            const userInput = document.getElementById('user-input').value.trim();
-            if (userInput === "") return;
+function getRandomArtist() {
+    const artists = Object.keys(songRecommendations);
+    return artists[Math.floor(Math.random() * artists.length)];
+}
 
-            const chatbox = document.getElementById('chatbox');
+function recommendSong(artist) {
+    const songs = songRecommendations[artist];
+    if (songs) {
+        return songs[Math.floor(Math.random() * songs.length)];
+    } else {
+        return "Sorry, I couldn't find any recommendations for that artist.";
+    }
+}
 
-            // Display user message
-            const userMessage = document.createElement('div');
-            userMessage.className = 'message user-message';
-            userMessage.textContent = userInput;
-            chatbox.appendChild(userMessage);
+document.getElementById('user-form').addEventListener('submit', function(event) {
+    event.preventDefault();
 
-            // Send user input to Formspree
-            fetch('https://formspree.io/f/xnqeeqdy', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ message: userInput })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Success:', data);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+    const userInput = document.getElementById('user-input').value.trim().toLowerCase();
+    if (userInput === "") return;
 
-            // Display bot response
-            const botResponse = document.createElement('div');
-            botResponse.className = 'message bot-message';
-            botResponse.textContent = getRandomResponse();
-            chatbox.appendChild(botResponse);
+    const chatbox = document.getElementById('chatbox');
 
-            // Clear input field
-            document.getElementById('user-input').value = '';
+    // Display user message
+    const userMessage = document.createElement('div');
+    userMessage.className = 'message user-message';
+    userMessage.textContent = userInput;
+    chatbox.appendChild(userMessage);
 
-            // Scroll to the bottom
-            chatbox.scrollTop = chatbox.scrollHeight;
+    // Check if user asked for a song recommendation
+    if (userInput.startsWith("song")) {
+        const artist = getRandomArtist();
+        const botResponse = document.createElement('div');
+        botResponse.className = 'message bot-message';
+        botResponse.textContent = `For ${artist}, I recommend "${recommendSong(artist)}"`;
+        chatbox.appendChild(botResponse);
+    } else {
+        // Send user input to Formspree
+        fetch('https://formspree.io/f/xnqeeqdy', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message: userInput })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
         });
+
+        // Display bot response
+        const botResponse = document.createElement('div');
+        botResponse.className = 'message bot-message';
+        botResponse.textContent = getRandomResponse();
+        chatbox.appendChild(botResponse);
+    }
+
+    // Clear input field
+    document.getElementById('user-input').value = '';
+
+    // Scroll to the bottom
+    chatbox.scrollTop = chatbox.scrollHeight;
+});
+
     </script>
 </body>
 </html>
