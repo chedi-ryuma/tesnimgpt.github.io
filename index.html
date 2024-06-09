@@ -1,154 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tesnim GPT</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <center><h1>Tesnim GPT</h1></center>
-    <div class="chat-container">
-        <div id="chatbox" class="chatbox">
-            <div class="message bot-message">Hello! Ask me anything.</div>
-        </div>
-        <div class="input-container">
-            <form id="user-form">
-                <input type="text" id="user-input" placeholder="Type your message here..." name="message">
-                <button type="submit">Send</button>
-            </form>
-        </div>
-    </div>
-    <script>
-const responses = ["barazammer", "al wabe", "7el 3ani", "nafssi 3am tel3i", "n7eb croissant"];
-const songRecommendations = {
-    "Nancy Ajram": [
-        { name: "Ah W Noss" },
-        { name: "Ma Tegi Hena" },
-        { name: "Yay" },
-        { name: "Badna Nwalee El Jaw" },
-        { name: "Meen Dah Elly Nseik" },
-        { name: "Lamset Eed" },
-        { name: "Elli Kan" },
-        { name: "Enta Eih" },
-        { name: "Oul Tani Keda" },
-        { name: "Inta Eyh" }
-    ],
-    "Ruby": [
-        { name: "Leih Beydary Kedah" },
-        { name: "Meshit Wara Ehsasy" },
-        { name: "Ana Donyeto" },
-        { name: "Ana Omry Ma3ak" },
-        { name: "El Gharaam" },
-        { name: "Bet'ahaseb" },
-        { name: "Ah Ya Leil" },
-        { name: "Ghawy" },
-        { name: "Matkhafesh" },
-        { name: "Ana Mashi" }
-    ],
-    "Sherine": [
-        { name: "Masha'er" },
-        { name: "Kolly Melkak" },
-        { name: "Bayen Menek" },
-        { name: "Hobbo Ganna" },
-        { name: "El Watar El Hassas" },
-        { name: "Nassay" },
-        { name: "Mesh Bas Haga" },
-        { name: "Ayez Nefsy" },
-        { name: "Ah Ya Leil" },
-        { name: "Sabri Aleel" }
-    ]
-};
-
-
-function getRandomResponse() {
-    return responses[Math.floor(Math.random() * responses.length)];
-}
-
-function getRandomArtist() {
-    const artists = Object.keys(songRecommendations);
-    return artists[Math.floor(Math.random() * artists.length)];
-}
-
-function recommendSong(artist) {
-    const songs = songRecommendations[artist];
-    if (songs) {
-        const randomSong = songs[Math.floor(Math.random() * songs.length)];
-        return randomSong.name;
-    } else {
-        return "Sorry, I couldn't find any recommendations for that artist.";
+document.getElementById('butterfly-mode').addEventListener('click', function() {
+    for (let i = 0; i < 50; i++) {
+        createButterfly();
     }
-}
-
-document.getElementById('user-form').addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    const userInput = document.getElementById('user-input').value.trim().toLowerCase();
-    if (userInput === "") return;
-
-    const chatbox = document.getElementById('chatbox');
-
-    // Display user message
-    const userMessage = document.createElement('div');
-    userMessage.className = 'message user-message';
-    userMessage.textContent = userInput;
-    chatbox.appendChild(userMessage);
-
-    // Check if user asked for a song recommendation
-    if (userInput.startsWith("song")) {
-        const artist = getRandomArtist();
-        const songName = recommendSong(artist);
-        const botResponse = document.createElement('div');
-        botResponse.className = 'message bot-message';
-        botResponse.innerHTML = `For ${artist}, I recommend searching for "${songName}" on <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(songName)}" target="_blank">YouTube</a>.`;
-        chatbox.appendChild(botResponse);
-    }else if (userInput === "chedi") {
-        const botResponse = document.createElement('div');
-        botResponse.className = 'message bot-message';
-        botResponse.textContent = "Cuuuuuuuute 3al e5er";
-        chatbox.appendChild(botResponse);}
-    else if (userInput === "tesnim") {
-        const botResponse = document.createElement('div');
-        botResponse.className = 'message bot-message';
-        botResponse.textContent = "ma9souma fi zouz";
-        chatbox.appendChild(botResponse);}
-    else {
-        // Send user input to Formspree
-        fetch('https://formspree.io/f/xnqeeqdy', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ message: userInput })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Success:', data);
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
-
-        // Display bot response
-        const botResponse = document.createElement('div');
-        botResponse.className = 'message bot-message';
-        botResponse.textContent = getRandomResponse();
-        chatbox.appendChild(botResponse);
-    }
-
-    // Clear input field
-    document.getElementById('user-input').value = '';
-
-    // Scroll to the bottom
-    chatbox.scrollTop = chatbox.scrollHeight;
 });
 
-    </script>
-</body>
-</html>
+function createButterfly() {
+    const butterfly = document.createElement('div');
+    butterfly.className = 'butterfly';
+    butterfly.innerHTML = '🦋'; // 🦋 emoji
+    document.body.appendChild(butterfly);
+
+    const maxX = window.innerWidth - butterfly.offsetWidth;
+    const maxY = window.innerHeight - butterfly.offsetHeight;
+    let x = Math.floor(Math.random() * maxX);
+    let y = Math.floor(Math.random() * maxY);
+
+    butterfly.style.left = x + 'px';
+    butterfly.style.top = y + 'px';
+
+    const updateInterval = Math.floor(Math.random() * 2000) + 500; // Random update interval between 0.5 and 2 seconds
+
+    setInterval(() => {
+        x = Math.max(0, Math.min(maxX, x + Math.floor(Math.random() * 21) - 10)); // Random change in x-coordinate
+        y = Math.max(0, Math.min(maxY, y + Math.floor(Math.random() * 21) - 10)); // Random change in y-coordinate
+
+        butterfly.style.left = x + 'px';
+        butterfly.style.top = y + 'px';
+    }, updateInterval);
+}
