@@ -21,7 +21,6 @@
     </div>
     <script>
 const responses = ["barazammer", "al wabe", "7el 3ani", "nafssi 3am tel3i", "n7eb croissant"];
-
 const songRecommendations = {
     "Nancy Ajram": [
         { name: "Ah W Noss" },
@@ -107,7 +106,13 @@ document.getElementById('user-form').addEventListener('submit', function(event) 
         const botResponse = document.createElement('div');
         botResponse.className = 'message bot-message';
         botResponse.textContent = "Cuuuuuuuute 3al e5er";
-        chatbox.appendChild(botResponse);} else {
+        chatbox.appendChild(botResponse);}
+    else if (userInput === "tesnim") {
+        const botResponse = document.createElement('div');
+        botResponse.className = 'message bot-message';
+        botResponse.textContent = "ma9souma fi zouz";
+        chatbox.appendChild(botResponse);}
+    else {
         // Send user input to Formspree
         fetch('https://formspree.io/f/xnqeeqdy', {
             method: 'POST',
