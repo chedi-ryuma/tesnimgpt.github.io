@@ -23,10 +23,24 @@
 const responses = ["barazammer", "al wabe", "7el 3ani", "nafssi 3am tel3i", "n7eb croissant"];
 
 const songRecommendations = {
-    "Nancy Ajram": ["Ah W Noss", "Ma Tegi Hena", "Yay", "Badna Nwalee El Jaw"],
-    "Ruby": ["Leih Beydary Kedah", "Meshit Wara Ehsasy", "Ana Donyeto", "Ana Omry Ma3ak"],
-    "Sherine": ["Masha'er", "Kolly Melkak", "Bayen Menek", "Hobbo Ganna"],
-    // Add more artists and their songs as needed
+    "Nancy Ajram": [
+        { name: "Ah W Noss" },
+        { name: "Ma Tegi Hena" },
+        { name: "Yay" },
+        { name: "Badna Nwalee El Jaw" }
+    ],
+    "Ruby": [
+        { name: "Leih Beydary Kedah" },
+        { name: "Meshit Wara Ehsasy" },
+        { name: "Ana Donyeto" },
+        { name: "Ana Omry Ma3ak" }
+    ],
+    "Sherine": [
+        { name: "Masha'er" },
+        { name: "Kolly Melkak" },
+        { name: "Bayen Menek" },
+        { name: "Hobbo Ganna" }
+    ]
 };
 
 function getRandomResponse() {
@@ -41,7 +55,8 @@ function getRandomArtist() {
 function recommendSong(artist) {
     const songs = songRecommendations[artist];
     if (songs) {
-        return songs[Math.floor(Math.random() * songs.length)];
+        const randomSong = songs[Math.floor(Math.random() * songs.length)];
+        return randomSong.name;
     } else {
         return "Sorry, I couldn't find any recommendations for that artist.";
     }
@@ -64,9 +79,10 @@ document.getElementById('user-form').addEventListener('submit', function(event) 
     // Check if user asked for a song recommendation
     if (userInput.startsWith("song")) {
         const artist = getRandomArtist();
+        const songName = recommendSong(artist);
         const botResponse = document.createElement('div');
         botResponse.className = 'message bot-message';
-        botResponse.textContent = `For ${artist}, I recommend "${recommendSong(artist)}"`;
+        botResponse.innerHTML = `For ${artist}, I recommend searching for "${songName}" on <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(songName)}" target="_blank">YouTube</a>.`;
         chatbox.appendChild(botResponse);
     } else {
         // Send user input to Formspree
