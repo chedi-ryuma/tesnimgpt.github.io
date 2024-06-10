@@ -6,17 +6,17 @@
     <title>Tesnim GPT</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* CSS for butterfly */
-        .butterfly {
+        /* CSS for butterfly and flag */
+        .butterfly, .flag {
             position: fixed;
             top: 0;
             left: 0;
             font-size: 30px;
             z-index: 9999;
             pointer-events: none;
-            animation: butterfly-fly 5s linear infinite;
+            animation: fly 5s linear infinite;
         }
-        @keyframes butterfly-fly {
+        @keyframes fly {
             0% { transform: translate(0, 0) rotate(0); }
             50% { transform: translate(200px, -100px) rotate(360deg); }
             100% { transform: translate(400px, 0) rotate(720deg); }
@@ -28,182 +28,194 @@
     <div class="chat-container">
         <div id="chatbox" class="chatbox">
             <div class="message bot-message">Hello! Ask me anything.</div>
-            <div class="message bot-message">for song recemdation write song.</div>
+            <div class="message bot-message">For song recommendations, write "song".</div>
         </div>
         <div class="input-container">
             <form id="user-form">
                 <input type="text" id="user-input" placeholder="Type your message here..." name="message">
                 <button type="submit">Send</button>
             </form>
-            <!-- Button for Butterfly Mode -->
+            <!-- Buttons for Butterfly and Palestine Modes -->
             <button id="butterfly-mode">Butterfly Mode</button>
+            <button id="palestine-mode">Palestine Mode</button>
         </div>
     </div>
     <script>
         document.getElementById('butterfly-mode').addEventListener('click', function() {
-    for (let i = 0; i < 50; i++) {
-        createButterfly();
-    }
-});
-
-function createButterfly() {
-    const butterfly = document.createElement('div');
-    butterfly.className = 'butterfly';
-    butterfly.innerHTML = '🦋'; // 🦋 emoji
-    document.body.appendChild(butterfly);
-
-    const maxX = window.innerWidth - butterfly.offsetWidth;
-    const maxY = window.innerHeight - butterfly.offsetHeight;
-    let x = Math.floor(Math.random() * maxX);
-    let y = Math.floor(Math.random() * maxY);
-
-    butterfly.style.left = x + 'px';
-    butterfly.style.top = y + 'px';
-
-    const updateInterval = Math.floor(Math.random() * 2000) + 500; // Random update interval between 0.5 and 2 seconds
-
-    // Set a timeout to remove the butterfly after 10 seconds
-    setTimeout(() => {
-        document.body.removeChild(butterfly);
-    }, 10000);
-
-    setInterval(() => {
-        x = Math.max(0, Math.min(maxX, x + Math.floor(Math.random() * 21) - 10)); // Random change in x-coordinate
-        y = Math.max(0, Math.min(maxY, y + Math.floor(Math.random() * 21) - 10)); // Random change in y-coordinate
-
-        butterfly.style.left = x + 'px';
-        butterfly.style.top = y + 'px';
-    }, updateInterval);
-}
-
-
-const responses = ["barazammer", "al wabe", "7el 3ani", "nafssi 3am tel3i","eb3din","e7term naffsk","n7eb nemchi lfilanda","manifestation", "n7eb croissant"];
-const songRecommendations = {
-    "Nancy Ajram": [
-        { name: "Ah W Noss" },
-        { name: "Ma Tegi Hena" },
-        { name: "Yay" },
-        { name: "Badna Nwalee El Jaw" },
-        { name: "Meen Dah Elly Nseik" },
-        { name: "Lamset Eed" },
-        { name: "Elli Kan" },
-        { name: "Enta Eih" },
-        { name: "Oul Tani Keda" },
-        { name: "Inta Eyh" }
-    ],
-    "Ruby": [
-        { name: "Leih Beydary Kedah" },
-        { name: "Meshit Wara Ehsasy" },
-        { name: "Ana Donyeto" },
-        { name: "Ana Omry Ma3ak" },
-        { name: "El Gharaam" },
-        { name: "Bet'ahaseb" },
-        { name: "Ah Ya Leil" },
-        { name: "Ghawy" },
-        { name: "Matkhafesh" },
-        { name: "Ana Mashi" }
-    ],
-    "Sherine": [
-        { name: "Masha'er" },
-        { name: "Kolly Melkak" },
-        { name: "Bayen Menek" },
-        { name: "Hobbo Ganna" },
-        { name: "El Watar El Hassas" },
-        { name: "Nassay" },
-        { name: "Mesh Bas Haga" },
-        { name: "Ayez Nefsy" },
-        { name: "Ah Ya Leil" },
-        { name: "Sabri Aleel" }
-    ]
-};
-
-
-function getRandomResponse() {
-    return responses[Math.floor(Math.random() * responses.length)];
-}
-
-function getRandomArtist() {
-    const artists = Object.keys(songRecommendations);
-    return artists[Math.floor(Math.random() * artists.length)];
-}
-
-function recommendSong(artist) {
-    const songs = songRecommendations[artist];
-    if (songs) {
-        const randomSong = songs[Math.floor(Math.random() * songs.length)];
-        return randomSong.name;
-    } else {
-        return "Sorry, I couldn't find any recommendations for that artist.";
-    }
-}
-
-document.getElementById('user-form').addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    const userInput = document.getElementById('user-input').value.trim().toLowerCase();
-    if (userInput === "") return;
-
-    const chatbox = document.getElementById('chatbox');
-
-    // Display user message
-    const userMessage = document.createElement('div');
-    userMessage.className = 'message user-message';
-    userMessage.textContent = userInput;
-    chatbox.appendChild(userMessage);
-
-    // Check if user asked for a song recommendation
-    if (userInput.startsWith("song")) {
-        const artist = getRandomArtist();
-        const songName = recommendSong(artist);
-        const botResponse = document.createElement('div');
-        botResponse.className = 'message bot-message';
-        botResponse.innerHTML = `For ${artist}, I recommend searching for "${songName}" on <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(songName)}" target="_blank">YouTube</a>.`;
-        chatbox.appendChild(botResponse);
-    }else if (userInput === "chedi") {
-        const botResponse = document.createElement('div');
-        botResponse.className = 'message bot-message';
-        botResponse.textContent = "Cuuuuuuuute 3al e5er";
-        chatbox.appendChild(botResponse);}
-        else if (userInput === "palestine") {
-        const botResponse = document.createElement('div');
-        botResponse.className = 'message bot-message';
-        botResponse.textContent = "bara zammer ;)";
-        chatbox.appendChild(botResponse);}
-    else if (userInput === "tesnim") {
-        const botResponse = document.createElement('div');
-        botResponse.className = 'message bot-message';
-        botResponse.textContent = "ma9souma fi zouz";
-        chatbox.appendChild(botResponse);}
-    else {
-        // Send user input to Formspree
-        fetch('https://formspree.io/f/xnqeeqdy', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ message: userInput })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+            for (let i = 0; i < 50; i++) {
+                createButterfly();
             }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Success:', data);
-        })
-        .catch((error) => {
-            console.error('Error:', error);
         });
 
-        // Display bot response
-        const botResponse = document.createElement('div');
-        botResponse.className = 'message bot-message';
-        botResponse.textContent = getRandomResponse();
-        chatbox.appendChild(botResponse);
-    }
+        document.getElementById('palestine-mode').addEventListener('click', function() {
+            for (let i = 0; i < 50; i++) {
+                createFlag();
+            }
+        });
 
+        function createButterfly() {
+            createFlyingElement('🦋', 'butterfly');
+        }
+
+        function createFlag() {
+            createFlyingElement('🇵🇸', 'flag');
+        }
+
+        function createFlyingElement(content, className) {
+            const element = document.createElement('div');
+            element.className = className;
+            element.innerHTML = content;
+            document.body.appendChild(element);
+
+            const maxX = window.innerWidth - element.offsetWidth;
+            const maxY = window.innerHeight - element.offsetHeight;
+            let x = Math.floor(Math.random() * maxX);
+            let y = Math.floor(Math.random() * maxY);
+
+            element.style.left = x + 'px';
+            element.style.top = y + 'px';
+
+            const updateInterval = Math.floor(Math.random() * 2000) + 500; // Random update interval between 0.5 and 2 seconds
+
+            // Set a timeout to remove the element after 10 seconds
+            setTimeout(() => {
+                document.body.removeChild(element);
+            }, 10000);
+
+            setInterval(() => {
+                x = Math.max(0, Math.min(maxX, x + Math.floor(Math.random() * 21) - 10)); // Random change in x-coordinate
+                y = Math.max(0, Math.min(maxY, y + Math.floor(Math.random() * 21) - 10)); // Random change in y-coordinate
+
+                element.style.left = x + 'px';
+                element.style.top = y + 'px';
+            }, updateInterval);
+        }
+
+        const responses = ["barazammer", "al wabe", "7el 3ani", "nafssi 3am tel3i","eb3din","e7term naffsk","n7eb nemchi lfilanda","manifestation", "n7eb croissant"];
+        const songRecommendations = {
+            "Nancy Ajram": [
+                { name: "Ah W Noss" },
+                { name: "Ma Tegi Hena" },
+                { name: "Yay" },
+                { name: "Badna Nwalee El Jaw" },
+                { name: "Meen Dah Elly Nseik" },
+                { name: "Lamset Eed" },
+                { name: "Elli Kan" },
+                { name: "Enta Eih" },
+                { name: "Oul Tani Keda" },
+                { name: "Inta Eyh" }
+            ],
+            "Ruby": [
+                { name: "Leih Beydary Kedah" },
+                { name: "Meshit Wara Ehsasy" },
+                { name: "Ana Donyeto" },
+                { name: "Ana Omry Ma3ak" },
+                { name: "El Gharaam" },
+                { name: "Bet'ahaseb" },
+                { name: "Ah Ya Leil" },
+                { name: "Ghawy" },
+                { name: "Matkhafesh" },
+                { name: "Ana Mashi" }
+            ],
+            "Sherine": [
+                { name: "Masha'er" },
+                { name: "Kolly Melkak" },
+                { name: "Bayen Menek" },
+                { name: "Hobbo Ganna" },
+                { name: "El Watar El Hassas" },
+                { name: "Nassay" },
+                { name: "Mesh Bas Haga" },
+                { name: "Ayez Nefsy" },
+                { name: "Ah Ya Leil" },
+                { name: "Sabri Aleel" }
+            ]
+        };
+
+        function getRandomResponse() {
+            return responses[Math.floor(Math.random() * responses.length)];
+        }
+
+        function getRandomArtist() {
+            const artists = Object.keys(songRecommendations);
+            return artists[Math.floor(Math.random() * artists.length)];
+        }
+
+        function recommendSong(artist) {
+            const songs = songRecommendations[artist];
+            if (songs) {
+                const randomSong = songs[Math.floor(Math.random() * songs.length)];
+                return randomSong.name;
+            } else {
+                return "Sorry, I couldn't find any recommendations for that artist.";
+            }
+        }
+
+        document.getElementById('user-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const userInput = document.getElementById('user-input').value.trim().toLowerCase();
+            if (userInput === "") return;
+
+            const chatbox = document.getElementById('chatbox');
+
+            // Display user message
+            const userMessage = document.createElement('div');
+            userMessage.className = 'message user-message';
+            userMessage.textContent = userInput;
+            chatbox.appendChild(userMessage);
+
+            // Check if user asked for a song recommendation
+            if (userInput.startsWith("song")) {
+                const artist = getRandomArtist();
+                const songName = recommendSong(artist);
+                const botResponse = document.createElement('div');
+                botResponse.className = 'message bot-message';
+                botResponse.innerHTML = `For ${artist}, I recommend searching for "${songName}" on <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(songName)}" target="_blank">YouTube</a>.`;
+                chatbox.appendChild(botResponse);
+            } else if (userInput === "chedi") {
+                const botResponse = document.createElement('div');
+                botResponse.className = 'message bot-message';
+                botResponse.textContent = "Cuuuuuuuute 3al e5er";
+                chatbox.appendChild(botResponse);
+            } else if (userInput === "palestine") {
+                const botResponse = document.createElement('div');
+                botResponse.className = 'message bot-message';
+                botResponse.textContent = "bara zammer ;)";
+                chatbox.appendChild(botResponse);
+            } else if (userInput === "tesnim") {
+                const botResponse = document.createElement('div');
+                botResponse.className = 'message bot-message';
+                botResponse.textContent = "ma9souma fi zouz";
+                chatbox.appendChild(botResponse);
+            } else {
+                // Send user input to Formspree
+                fetch('https://formspree.io/f/xnqeeqdy', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ message: userInput })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Success:', data);
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+
+                // Display bot response
+                const botResponse = document.createElement('div');
+                botResponse.className = 'message bot-message';
+                botResponse.textContent = getRandomResponse();
+                chatbox.appendChild(botResponse);
+            }
     // Clear input field
     document.getElementById('user-input').value = '';
 
